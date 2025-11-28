@@ -157,7 +157,13 @@ I upload brand-new riddles every day — from easy brain teasers to impossible p
 ✔️ Challenge your friends
 ✔️ Subscribe for daily riddles
 ✔️ Turn on the bell so you never miss a new one! 🔔
+
+Tags:
+
 """
+
+for tags in youtube_tags:
+    youtube_description += f"#{tags}\n"
 
 yt_upload.upload_video(
     video_path=final_video_path,

@@ -162,9 +162,8 @@ I upload brand-new riddles every day — from easy brain teasers to impossible p
 
 Tags:
 """
-
 for tags in youtube_tags:
-    youtube_description += f"\n#{tags}\n"
+    youtube_description += f"\n#{tags.replace(" ","")}\n"
 
 yt_upload.upload_video(
     video_path=final_video_path,

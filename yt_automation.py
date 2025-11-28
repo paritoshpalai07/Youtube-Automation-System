@@ -75,6 +75,8 @@ response = client.models.generate_content(
 
 youtube_tags = response.text.replace("'''","").replace("python","").strip("[]").replace("'","").replace('"',"").split(",")
 youtube_tags = [tags.strip() for tags in youtube_tags]
+print(youtube_tags)
+print(type(youtube_tags))
 print("Youtube Tags generation finished!")
 
 print("Adding riddle to riddle list...")
@@ -159,11 +161,10 @@ I upload brand-new riddles every day — from easy brain teasers to impossible p
 ✔️ Turn on the bell so you never miss a new one! 🔔
 
 Tags:
-
 """
 
 for tags in youtube_tags:
-    youtube_description += f"#{tags}\n"
+    youtube_description += f"\n#{tags}\n"
 
 yt_upload.upload_video(
     video_path=final_video_path,

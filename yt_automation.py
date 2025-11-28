@@ -53,7 +53,7 @@ riddle_str = ""
 for key in riddle:
     riddle_str += riddle[key] + " "
 
-prompt = f"based on the following riddle write me a only one title for the youtube shorts video nothing else: '{riddle_str}'"
+prompt = f"based on the following write me a only one title for the youtube shorts video nothing else: '{riddle_str}'"
 
 print("Now generating title of the video.....")
 
@@ -64,7 +64,18 @@ response = client.models.generate_content(
 
 youtube_title = response.text
 
-print("Finished Generating Title of the video!")
+print("Title generation finished!\nNow generating tags...")
+
+prompt = f"based on the following give me a python list of youtube shorts video tags for the youtube shorts video, DO NOT add anything outside than python list: '{riddle_str}'"
+
+response = client.models.generate_content(
+    model="gemini-2.5-flash",
+    contents=prompt,
+)
+
+youtube_tags = response.text.replace("'''","").replace("python","").strip("[]").replace("'","").replace('"',"").split(",")
+youtube_tags = [tags.strip() for tags in youtube_tags]
+print("Youtube Tags generation finished!")
 
 print("Adding riddle to riddle list...")
 with open(r"C:\Users\HP\Desktop\Youtube Automation\riddles.txt", "a") as f:
@@ -147,24 +158,6 @@ I upload brand-new riddles every day — from easy brain teasers to impossible p
 ✔️ Subscribe for daily riddles
 ✔️ Turn on the bell so you never miss a new one! 🔔
 """
-
-youtube_tags = [
-    "riddle shorts",
-    "daily riddles",
-    "brain teasers",
-    "tricky riddles",
-    "fun riddles",
-    "short riddles",
-    "puzzles",
-    "logic riddles",
-    "quick riddles",
-    "impossible riddles",
-    "comment your answer",
-    "riddle challenge",
-    "emoji riddles",
-    "brain quiz",
-    "the riddle feed"
-]
 
 yt_upload.upload_video(
     video_path=final_video_path,

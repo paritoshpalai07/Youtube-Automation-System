@@ -10,9 +10,11 @@ import logging
 from pathlib import Path
 from schedule import every, repeat, run_pending
 from time import sleep
+import shutil 
 import yt_upload
 
-load_dotenv()
+project_dir = Path.home() / "Desktop" / "Youtube Automation"
+load_dotenv(f"{project_dir / ".env"}")
 
 logging.basicConfig(
     filename="app.log",
@@ -25,7 +27,7 @@ logger = logging.getLogger(__name__)
 @repeat(every().day.at("08:00"))
 @repeat(every().day.at("20:00"))
 def yt_automation():
-    riddle_file_path = Path.home() / "Desktop" / "Youtube Automation" / "riddles.txt"
+    riddle_file_path = project_dir / "riddles.txt"
 
     try:
         client = genai.Client(api_key=os.getenv("Gemini_Api"))
@@ -107,16 +109,16 @@ def yt_automation():
 
         logger.info("Creating folder for video...")
         folder_name = f"{datetime.date.today()} {riddle["answer"]}"
-        folder_path = Path.home() / "Desktop" / "Youtube Automation" / "Generated Videos" / folder_name
+        folder_path = project_dir / "Generated Videos" / folder_name
         os.mkdir(folder_path)
         os.chdir(folder_path)
         logger.info("Folder created successfully!")
         logger.info("Generating audio for the video...")
 
         script_path = Path(folder_path) / "script.mp3"
-        bg_music_path = Path.home() / "Desktop" / "Youtube Automation" / "Musics" / "bgmusic1.mp3"
-        video_clip_path = Path.home() / "Desktop" / "Youtube Automation" / "Resources" / "character_edited.mp4"
-        font_file_path = Path.home() / "Desktop" / "Youtube Automation" / "fonts" / "Permanent_Marker" / "PermanentMarker-Regular.ttf"
+        bg_music_path = project_dir / "Musics" / "bgmusic1.mp3"
+        video_clip_path = project_dir / "Resources" / "character_edited.mp4"
+        font_file_path = project_dir / "fonts" / "Permanent_Marker" / "PermanentMarker-Regular.ttf"
 
         res = client.text_to_speech.generate(
                 text=riddle_str,
@@ -193,9 +195,17 @@ def yt_automation():
             privacy="public"
         )
         logger.info("Video uploaded successfully")
+        logger.info("Changing directory to Project Directory...")
+        os.chdir(project_dir)
+        logger.info(f"Successfully changed directory to {Path.cwd()}")
+        logger.info("Deleting generated video and audio after 10 seconds...")
+        sleep(10)
+        shutil.rmtree(folder_path)
+        logger.info("Successfully deleted video and audio")
     except Exception as e: 
         print("Something went wrong! Please logs to know more!")
         logger.error(f"an error occured: {e}")
+        
 
 while True:
     run_pending()

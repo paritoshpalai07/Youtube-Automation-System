@@ -4,11 +4,12 @@ from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
+from pathlib import Path
 
-
+project_dir = Path.home() / "Desktop" / "Youtube Automation"
 SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
-token_path = "C:\\Users\\HP\\Desktop\\Youtube Automation\\token.json"
-secret_path = "C:\\Users\\HP\\Desktop\\Youtube Automation\\client_secret.json"
+token_path = project_dir  / "token.json"
+secret_path = project_dir / "client_secret.json"
 
 
 def get_credentials():

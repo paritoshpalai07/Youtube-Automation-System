@@ -24,7 +24,7 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-@repeat(every().day.at("08:00"))
+@repeat(every().day.at("10:30"))
 @repeat(every().day.at("20:00"))
 def yt_automation():
     riddle_file_path = project_dir / "riddles.txt"

@@ -13,7 +13,7 @@ from time import sleep
 import shutil 
 import yt_upload
 
-project_dir = Path.home() / "Desktop" / "Youtube Automation"
+project_dir = Path.cwd()
 load_dotenv(f"{project_dir / ".env"}")
 
 logging.basicConfig(
